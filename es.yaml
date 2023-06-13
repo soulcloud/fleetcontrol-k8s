@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+spec:
+  serviceName: "elasticsearch"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:6.6.1
+        env:
+        - name: discovery.type
+          value: single-node
+        ports:
+        - containerPort: 9200
+          name: client
+        - containerPort: 9300
+          name: nodes
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/elasticsearch/data
+      volumes:
+      - name: data
+        hostPath:
+          path: /mnt/data
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  labels:
+    service: elasticsearch
+spec:
+  ports:
+  - port: 9200
+    name: client
+  - port: 9300
+    name: nodes
+  selector:
+    app: elasticsearch
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana-deployment
+  labels:
+    app: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana:6.6.1
+        ports:
+        - containerPort: 5601
+          name: webinterface
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  labels:
+    service: kibana
+spec:
+  type: NodePort
+  ports:
+  - port: 5601
+    name: webinterface
+  selector:
+    app: kibana
