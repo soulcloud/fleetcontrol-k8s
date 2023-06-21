@@ -1,4 +1,4 @@
-# Ignore Terraform remote state files
-terraform/remote_state/.terraform.lock.hcl
-terraform/remote_state/terraform.tfstate
-terraform/remote_state/terraform.tfstate.backup
+# Ignore Terraform local state files
+terraform/local_state/.terraform.lock.hcl
+terraform/local_state/terraform.tfstate
+terraform/local_state/terraform.tfstate.backup
