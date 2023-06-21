@@ -2,3 +2,4 @@
 terraform/local_state/.terraform.lock.hcl
 terraform/local_state/terraform.tfstate
 terraform/local_state/terraform.tfstate.backup
+terraform/local_state/terraform.tfvars
