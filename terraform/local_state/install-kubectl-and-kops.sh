@@ -4,4 +4,4 @@
 sudo snap install kubectl --classic
 
 # Install kops
-sudo snap install kubectl
+sudo snap install kops

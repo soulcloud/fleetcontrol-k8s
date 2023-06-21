@@ -1,4 +1,4 @@
-#Bootstrap
+# Bootstrap
 resource "aws_instance" "bootstrap" {
   ami                    = var.ami_ubuntu
   instance_type          = "t3.micro"
@@ -7,23 +7,37 @@ resource "aws_instance" "bootstrap" {
   vpc_security_group_ids = [aws_security_group.k8s-sg.id]
   associate_public_ip_address = true
 
-  # Add a 10GB EBS volume to each instance
   root_block_device {
     volume_size = var.volume_size_small
     volume_type = var.volume_type
   }
 
-  user_data = <<-EOF
-    #!/bin/bash
-    ./install-kubectl-and-kops.sh
-    EOF
+  # Copy the bash script to the new instance
+  provisioner "file" {
+    source      = "install-kubectl-and-kops.sh"
+    destination = "/tmp/install-kubectl-and-kops.sh"
+  }
+
+  # Change permissions on the bash script and execute it
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/install-kubectl-and-kops.sh",
+      "/tmp/install-kubectl-and-kops.sh",
+    ]
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file(var.private_key_location)
+    host        = self.public_ip
+    }
+  
 
   tags = {
     Name = "bootstrap"
   }
 }
-
-
 
 
 # resource "aws_spot_instance_request" "spot-test" {
