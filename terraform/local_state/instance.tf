@@ -15,7 +15,7 @@ resource "aws_instance" "bootstrap" {
 
   user_data = <<-EOF
     #!/bin/bash
-    ./install-kubectl&kops.sh
+    ./install-kubectl-and-kops.sh
     EOF
 
   tags = {
