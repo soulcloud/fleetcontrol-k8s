@@ -80,10 +80,28 @@ resource "aws_key_pair" "ssh-key" {
     public_key = "${file(var.public_key_location)}"
 }
 
+# Bucket creation
+resource "aws_s3_bucket" "kops" {
+    bucket = "fleetcontrol-state-storage"
+}
 
+# Enable bucket versioning
+resource "aws_s3_bucket_versioning" "kops_versioning" {
+    bucket = aws_s3_bucket.kops.id
+    versioning_configuration {
+    status = "Enabled"
+}
+}
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "kops_sse_config" {
+  bucket = aws_s3_bucket.kops.id
 
-
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
 
 
 
