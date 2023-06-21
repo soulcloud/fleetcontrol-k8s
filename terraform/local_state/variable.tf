@@ -2,8 +2,12 @@ variable "vpc_cidr_block" {
   description = "CIDR block for the VPC"
 }
 
-variable "subnet_cidr_block" {
+variable "subnet_cidr_block_1" {
   description = "CIDR block for the primary subnet"
+}
+
+variable "subnet_cidr_block_2" {
+  description = "CIDR block for the secondary subnet"
 }
 
 variable "env_prefix" {

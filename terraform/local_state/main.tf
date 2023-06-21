@@ -22,7 +22,7 @@ resource "aws_vpc" "k8s-vpc" {
 
 resource "aws_subnet" "k8s-subnet-1" {
     vpc_id = aws_vpc.k8s-vpc.id 
-    cidr_block = var.subnet_cidr_block
+    cidr_block = var.subnet_cidr_block_1
     availability_zone = var.avail_zone_1
     tags = {
         Name: "${var.env_prefix}-subnet-1"
@@ -31,7 +31,7 @@ resource "aws_subnet" "k8s-subnet-1" {
 
 resource "aws_subnet" "k8s-subnet-2" {
     vpc_id = aws_vpc.k8s-vpc.id 
-    cidr_block = var.subnet_cidr_block
+    cidr_block = var.subnet_cidr_block_2
     availability_zone = var.avail_zone_2
     tags = {
         Name: "${var.env_prefix}-subnet-2"
