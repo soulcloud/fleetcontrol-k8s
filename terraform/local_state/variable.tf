@@ -19,7 +19,11 @@ variable "public_key_location" {
   description = "Local file path for the public SSH key"
 }
 
-variable "avail_zone" {
+variable "avail_zone_1" {
+  description = "Availability zone for the primary subnet"
+}
+
+variable "avail_zone_2" {
   description = "Availability zone for the primary subnet"
 }
 
