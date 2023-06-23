@@ -120,24 +120,24 @@ resource "aws_s3_bucket_ownership_controls" "kops_bucket_ownership" {
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "kops_bucket_public_access" {
-  bucket = aws_s3_bucket.kops.id
+# resource "aws_s3_bucket_public_access_block" "kops_bucket_public_access" {
+#   bucket = aws_s3_bucket.kops.id
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
-}
+#   block_public_acls       = false
+#   block_public_policy     = false
+#   ignore_public_acls      = false
+#   restrict_public_buckets = false
+# }
 
-resource "aws_s3_bucket_acl" "kops_bucket_acl" {
-  depends_on = [
-    aws_s3_bucket_ownership_controls.kops_bucket_ownership,
-    aws_s3_bucket_public_access_block.kops_bucket_public_access,
-  ]
+# resource "aws_s3_bucket_acl" "kops_bucket_acl" {
+#   depends_on = [
+#     aws_s3_bucket_ownership_controls.kops_bucket_ownership,
+#     aws_s3_bucket_public_access_block.kops_bucket_public_access,
+#   ]
 
-  bucket = aws_s3_bucket.kops.id
-  acl    = "public-read"
-}
+#   bucket = aws_s3_bucket.kops.id
+#   acl    = "public-read"
+# }
 
 
 
