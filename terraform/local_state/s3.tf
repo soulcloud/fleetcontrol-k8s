@@ -1,6 +1,6 @@
 # Bucket creation
 resource "aws_s3_bucket" "kops" {
-    bucket = "fleetcontrol-state-storage"
+    bucket = "fleetcontrol-state-store"
     
 }
 
