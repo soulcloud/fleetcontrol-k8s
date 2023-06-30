@@ -1,0 +1,10 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: example
+spec:
+  staticConfigs:
+    - labels:
+        exampleLabel: example
+      targets:
+        - example:9090
