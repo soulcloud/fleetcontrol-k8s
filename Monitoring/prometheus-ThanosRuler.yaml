@@ -1,0 +1,11 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ThanosRuler
+metadata:
+  name: example
+spec:
+  image: quay.io/thanos/thanos:v0.28.1
+  queryEndpoints:
+    - dnssrv+_http._tcp.example.monitoring.svc.cluster.local
+  ruleSelector:
+    matchLabels:
+      role: example

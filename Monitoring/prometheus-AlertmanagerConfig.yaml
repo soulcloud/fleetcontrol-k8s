@@ -1,0 +1,9 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: example
+spec:
+  receivers:
+    - name: example
+  route:
+    receiver: example

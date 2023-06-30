@@ -22,7 +22,7 @@ spec:
         - name: mongo-persistent-storage
           # pointer to the configuration of HOW we want the mount to be implemented
           persistentVolumeClaim:
-            claimName: mongodb-pvc
+            claimName: mongo-pvc
 ---
 kind: Service
 apiVersion: v1
