@@ -1,47 +1,20 @@
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: local-storage
-provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: main-pv-default
-spec:
-  storageClassName: local-storage
-  capacity:
-    storage: 15Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /var/data/shared-data-default
-    type: DirectoryOrCreate
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: main-pv-kubesystem
-  namespace: kube-system
-spec:
-  storageClassName: local-storage
-  capacity:
-    storage: 15Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /var/data/shared-data-kubesystem
-    type: DirectoryOrCreate
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mongodb-pvc
+  name: mongo-pvc
 spec:
-  storageClassName: local-storage
+  storageClassName: cloud-ssd
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 7Gi
+---
+# How do we want it implemented
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: cloud-ssd
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
