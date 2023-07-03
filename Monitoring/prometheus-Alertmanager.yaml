@@ -4,4 +4,4 @@ metadata:
   name: alertmanager-main
 spec:
   alertmanagerConfigSelector: {}
-  replicas: 2
+  replicas: 3

@@ -1,11 +1,11 @@
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: PrometheusAgent
 metadata:
-  name: Prometheus-Ag
+  name: example
 spec:
   podMonitorSelector: {}
   probeSelector: {}
-  replicas: 1
+  replicas: 2
   ruleSelector: {}
   serviceAccountName: prometheus-k8s
   serviceMonitorSelector: {}

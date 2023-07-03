@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
-  name: prometheus-meta
+  name: example
 spec:
   alerting:
     alertmanagers:
@@ -10,7 +10,7 @@ spec:
         port: web
   podMonitorSelector: {}
   probeSelector: {}
-  replicas: 1
+  replicas: 2
   ruleSelector: {}
   serviceAccountName: prometheus-k8s
   serviceMonitorSelector: {}
