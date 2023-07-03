@@ -1,9 +1,9 @@
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: example
+  name: monitoring
 spec:
-  jobName: example
+  jobName: prom-probe
   prober:
     url: blackbox-prometheus-blackbox-exporter:9115
   targets:
@@ -13,6 +13,6 @@ spec:
           - default
       selector:
         matchLabels:
-          probe: example
+          probe: monitoring
     interval: 15s
     module: http_2xx
