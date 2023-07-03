@@ -1,0 +1,141 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: alertmanager-config
+spec:
+  receivers:
+    - name: alertmanager-receiver
+  route:
+    receiver: alertmanager-receiver
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: Alertmanager
+metadata:
+  name: alertmanager-main
+spec:
+  alertmanagerConfigSelector: {}
+  replicas: 3
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: pod-monitor
+spec:
+  podMetricsEndpoints:
+    - interval: 30s
+      port: web
+  selector:
+    matchLabels:
+      app: prometheus
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: probe
+spec:
+  jobName: probe
+  prober:
+    url: blackbox-prometheus-blackbox-exporter:9115
+  targets:
+    ingress:
+      namespaceSelector:
+        matchNames:
+          - default
+      selector:
+        matchLabels:
+          probe: probe
+    interval: 15s
+    module: http_2xx
+
+---
+
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: PrometheusAgent
+metadata:
+  name: prometheus-agent
+spec:
+  podMonitorSelector: {}
+  probeSelector: {}
+  replicas: 2
+  ruleSelector: {}
+  serviceAccountName: prometheus-k8s
+  serviceMonitorSelector: {}
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+spec:
+  alerting:
+    alertmanagers:
+      - name: alertmanager-main
+        namespace: monitoring
+        port: web
+  podMonitorSelector: {}
+  probeSelector: {}
+  replicas: 2
+  ruleSelector: {}
+  serviceAccountName: prometheus-k8s
+  serviceMonitorSelector: {}
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: prometheus-rules
+spec:
+  groups:
+    - name: ./prometheus.rules
+      rules:
+        - alert: ExampleAlert
+          expr: vector(1)
+
+---
+
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: scrape-config
+spec:
+  staticConfigs:
+    - labels:
+        exampleLabel: example
+      targets:
+        - example:9090
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: service-monitor
+spec:
+  endpoints:
+    - interval: 30s
+      port: web
+  selector:
+    matchLabels:
+      operated-prometheus: "true"
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: ThanosRuler
+metadata:
+  name: thanos-ruler
+spec:
+  image: quay.io/thanos/thanos:v0.28.1
+  queryEndpoints:
+    - dnssrv+_http._tcp.example.monitoring.svc.cluster.local
+  ruleSelector:
+    matchLabels:
+      role: example
